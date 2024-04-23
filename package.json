@@ -1,19 +1,21 @@
 {
   "name": "whisper-messenger-backend",
+  "version": "0.0.0",
   "type": "module",
+  "author": "@krop24",
+  "license": "ISC",
   "imports": {
-    "./*": "./*",
-    "src/*": {
-      "default": "./*"
-    }
+    "src/*": "./src/*"
   },
   "scripts": {
-    "start": "node server.js",
-    "server": "nodemon server.js"
+    "build": "nodemon server.js",
+    "start": "nodemon server.js"
   },
+  "keywords": [],
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.4.5",
+    "esm": "^3.2.25",
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.5.0",

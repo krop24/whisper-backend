@@ -1,7 +1,10 @@
 import { Strategy as LocalStrategy } from 'passport-local'
 import { ExtractJwt, Strategy as JwtStrategy } from 'passport-jwt'
 import bcrypt from 'bcryptjs'
-import User from 'src/models/user'
+import User from '../models/user.js'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 export const passportConfig = passport => {
   passport.use(

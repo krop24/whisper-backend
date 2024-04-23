@@ -2,6 +2,7 @@ import dotenv from 'dotenv'
 import express from 'express'
 import mongoose from 'mongoose'
 import fs from 'fs'
+import routesConfig from './src/config/routes.js'
 
 dotenv.config()
 
@@ -14,21 +15,22 @@ if (!fs.existsSync(dir)) {
   fs.mkdirSync(dir, { recursive: true })
 }
 
+app.use(express.json())
+app.use('/uploads', express.static('public/uploads'))
+
+routesConfig.forEach(route => {
+  app.use(route.path, route.router)
+})
+
+app.listen(PORT, () => {
+  console.log(`App is running on http://localhost:${PORT}`)
+})
+
 mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(process.env.MONGO_URI)
   .then(() => {
     console.log('Connected to MongoDB')
   })
   .catch(err => {
     console.log(err)
   })
-
-app.use(express.json())
-app.use('/uploads', express.static('public/uploads'))
-
-app.listen(PORT, () => {
-  console.log(`App is running on http://localhost:${PORT}`)
-})

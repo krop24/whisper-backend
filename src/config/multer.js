@@ -1,5 +1,5 @@
 import multer from 'multer'
-import { checkFileType, convertToMB, getUniqueSuffix } from 'src/utils/helpers/file'
+import { checkFileType, convertToMB, getUniqueSuffix } from 'src/utils/helpers/file.js'
 import path from 'path'
 
 const storage = multer.diskStorage({
