@@ -1,0 +1,26 @@
+{
+  "useTabs": false,
+  "semi": false,
+  "endOfLine": "lf",
+  "jsxBracketSameLine": false,
+  "trailingComma": "all",
+  "singleQuote": true,
+  "printWidth": 90,
+  "tabWidth": 2,
+  "arrowParens": "avoid",
+  "overrides": [
+    {
+      "files": [
+        "*.json",
+        "*.cjs",
+        "*.md"
+      ],
+      "options": {
+        "trailingComma:": "none",
+        "singleQuote": false,
+        "tabWidth": 2,
+        "quoteProps": "preserve"
+      }
+    }
+  ]
+}

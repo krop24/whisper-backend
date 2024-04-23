@@ -1,23 +1,34 @@
-const dotenv = require('dotenv').config()
+import dotenv from 'dotenv'
+import express from 'express'
+import mongoose from 'mongoose'
+import fs from 'fs'
 
-const express = require('express');
+dotenv.config()
+
 const app = express()
-const PORT = 6667
+const PORT = process.env.port || 3000
 
-const mongoose = require('mongoose')
+const dir = './public/uploads'
 
-mongoose.connect(process.env.MONGO_URI, {
-    retryWrites: true,
-    w: 'majority',
-    appName: 'ChatApp'
-}).then (() => {
+if (!fs.existsSync(dir)) {
+  fs.mkdirSync(dir, { recursive: true })
+}
+
+mongoose
+  .connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
     console.log('Connected to MongoDB')
-}).catch((err) => {
+  })
+  .catch(err => {
     console.log(err)
-})
+  })
 
-
+app.use(express.json())
+app.use('/uploads', express.static('public/uploads'))
 
 app.listen(PORT, () => {
-    console.log(`App is running on http://localhost:${PORT}`)
+  console.log(`App is running on http://localhost:${PORT}`)
 })
