@@ -17,4 +17,10 @@ authRoutes.post('/register', AuthController.register)
  * */
 authRoutes.post('/login', AuthController.login)
 
+/*
+ * @route POST /api/auth/check
+ * @desc Check if user is logged in
+ * */
+authRoutes.get('/check', AuthController.checkSession)
+
 export default authRoutes

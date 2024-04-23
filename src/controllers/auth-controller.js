@@ -3,6 +3,9 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { isValidEmail, isValidField } from '../utils/helpers/validation.js'
 import { getRequestData } from '../utils/helpers/http.js'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 export class AuthController {
   static register(req, res) {
@@ -72,13 +75,30 @@ export class AuthController {
           jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: 3600 }, (err, token) => {
             res.json({
               success: true,
-              token: 'Bearer ' + token,
+              token,
             })
           })
         } else {
           return res.status(400).json({ message: 'Password incorrect' })
         }
       })
+    })
+  }
+
+  static checkSession(req, res, next) {
+    const token = req.header('Authorization')
+
+    if (!token) {
+      return res.status(401).json({ message: 'Unauthorized' })
+    }
+
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+      if (err) {
+        return res.status(401).json({ message: 'Unauthorized' })
+      }
+
+      req.user = decoded
+      next()
     })
   }
 }
