@@ -1,8 +1,10 @@
 import dotenv from 'dotenv'
 import express from 'express'
-import mongoose from 'mongoose'
 import fs from 'fs'
 import routesConfig from './src/config/routes.js'
+import { AuthController } from './src/controllers/auth.controller.js'
+import { connectDB } from './src/config/db.js'
+import { createSocket } from './src/config/socket.js'
 
 dotenv.config()
 
@@ -19,18 +21,16 @@ app.use(express.json())
 app.use('/uploads', express.static('public/uploads'))
 
 routesConfig.forEach(route => {
-  app.use(route.path, route.router)
+  if (route.private) {
+    app.use(route.path, AuthController.checkSession, route.router)
+  } else {
+    app.use(route.path, route.router)
+  }
 })
 
 app.listen(PORT, () => {
   console.log(`App is running on http://localhost:${PORT}`)
 })
 
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => {
-    console.log('Connected to MongoDB')
-  })
-  .catch(err => {
-    console.log(err)
-  })
+connectDB()
+createSocket(process.env.SOCKET_PORT)

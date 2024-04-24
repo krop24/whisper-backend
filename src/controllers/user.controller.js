@@ -1,4 +1,4 @@
-import User from '../models/user.js'
+import UserModel from '../models/user.model.js'
 import { isValidField } from '../utils/helpers/validation.js'
 import { getRequestData } from '../utils/helpers/http.js'
 
@@ -10,7 +10,7 @@ export class UserController {
       return res.status(404).json({ message: 'User not found' })
     }
 
-    User.findOne({ username }).then(user => {
+    UserModel.findOne({ username }).then(user => {
       if (!user) {
         return res.status(404).json({ message: 'User not found' })
       }
@@ -29,12 +29,14 @@ export class UserController {
       return res.status(400).json({ message: 'Please fill out all fields' })
     }
 
-    User.findOneAndReplace({ username }, { firstName, lastName, photo }).then(user => {
-      if (!user) {
-        return res.status(404).json({ message: 'User not found' })
-      }
+    UserModel.findOneAndReplace({ username }, { firstName, lastName, photo }).then(
+      user => {
+        if (!user) {
+          return res.status(404).json({ message: 'User not found' })
+        }
 
-      res.json(user)
-    })
+        res.json(user)
+      },
+    )
   }
 }

@@ -1,7 +1,7 @@
 import { Strategy as LocalStrategy } from 'passport-local'
 import { ExtractJwt, Strategy as JwtStrategy } from 'passport-jwt'
 import bcrypt from 'bcryptjs'
-import User from '../models/user.js'
+import UserModel from '../models/user.model.js'
 import dotenv from 'dotenv'
 
 dotenv.config()
@@ -13,7 +13,7 @@ export const passportConfig = passport => {
         usernameField: 'username',
       },
       (username, password, done) => {
-        User.findOne({ username }).then(user => {
+        UserModel.findOne({ username }).then(user => {
           if (!user) {
             return done(null, false, { message: 'Incorrect username' })
           }
@@ -38,7 +38,7 @@ export const passportConfig = passport => {
 
   passport.use(
     new JwtStrategy(opts, (jwtPayload, done) => {
-      User.findById(jwtPayload.id)
+      UserModel.findById(jwtPayload.id)
         .then(user => {
           if (user) {
             return done(null, user)

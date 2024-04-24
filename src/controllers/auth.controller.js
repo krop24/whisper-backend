@@ -1,4 +1,4 @@
-import User from '../models/user.js'
+import UserModel from '../models/user.model.js'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { isValidEmail, isValidField } from '../utils/helpers/validation.js'
@@ -24,12 +24,12 @@ export class AuthController {
       return res.status(400).json({ message: 'Please enter a valid email' })
     }
 
-    User.findOne({ email }).then(user => {
+    UserModel.findOne({ email }).then(user => {
       if (user) {
         return res.status(400).json({ message: 'User already exists' })
       }
 
-      const newUser = new User({
+      const newUser = new UserModel({
         username,
         email,
         password,
@@ -60,7 +60,7 @@ export class AuthController {
       return res.status(400).json({ message: 'Please fill out all fields' })
     }
 
-    User.findOne({ username }).then(user => {
+    UserModel.findOne({ username }).then(user => {
       if (!user) {
         return res.status(404).json({ message: 'User not found' })
       }
@@ -86,7 +86,7 @@ export class AuthController {
   }
 
   static checkSession(req, res, next) {
-    const token = req.header('Authorization')
+    const token = req.header('Authorization')?.split(' ')[1]
 
     if (!token) {
       return res.status(401).json({ message: 'Unauthorized' })
