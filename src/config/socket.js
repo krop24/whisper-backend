@@ -1,14 +1,8 @@
 import { Server } from 'socket.io'
-import { createServer } from 'http'
 import MessageModel from '../models/message.model.js'
 
-export const createSocket = port => {
-  const httpServer = createServer()
-  const io = new Server(httpServer, {
-    cors: {
-      origin: '*',
-    },
-  })
+export const createSocket = httpServer => {
+  const io = new Server(httpServer)
 
   io.on('connection', socket => {
     console.log('User connected:', socket.id)
@@ -31,6 +25,4 @@ export const createSocket = port => {
 
     socket.on('disconnect', () => console.log('User disconnected:', socket.id))
   })
-
-  httpServer.listen(port)
 }
