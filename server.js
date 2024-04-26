@@ -25,7 +25,7 @@ app.use('/uploads', express.static('public/uploads'))
 
 routesConfig.forEach(route => {
   if (route.private) {
-    app.use(route.path, AuthController.checkSession, route.router)
+    app.use(route.path, AuthController.authMiddleware, route.router)
   } else {
     app.use(route.path, route.router)
   }
