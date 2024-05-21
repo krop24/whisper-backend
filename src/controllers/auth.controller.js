@@ -68,7 +68,6 @@ export class AuthController {
       bcrypt.compare(password, user.password).then(isMatch => {
         if (isMatch) {
           const payload = {
-            id: user.id,
             username: user.username,
           }
 
@@ -85,7 +84,7 @@ export class AuthController {
     })
   }
 
-  static checkSession(req, res, next) {
+  static checkSession(req, res) {
     const token = req.header('Authorization')?.split(' ')[1]
 
     if (!token) {
